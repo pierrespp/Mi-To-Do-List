@@ -6,7 +6,11 @@ import { turnoService } from '@/services/turnoService'
 import { useTurnoStore } from '@/store/turnoStore'
 import { useToast } from '@/hooks/use-toast'
 
-export function RestartTurnoDialog() {
+interface RestartTurnoDialogProps {
+  trigger?: React.ReactNode
+}
+
+export function RestartTurnoDialog({ trigger }: RestartTurnoDialogProps = {}) {
   const [isOpen, setIsOpen] = useState(false)
   const [isRestarting, setIsRestarting] = useState(false)
   const { workspace, turno, setTurno, setTasks } = useTurnoStore()
@@ -31,10 +35,12 @@ export function RestartTurnoDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8" data-testid="btn-restart-turno">
-          <RefreshCcw className="w-4 h-4 mr-2" />
-          Reiniciar Turno
-        </Button>
+        {trigger ?? (
+          <Button variant="outline" size="sm" className="h-8" data-testid="btn-restart-turno">
+            <RefreshCcw className="w-4 h-4 mr-2" />
+            Reiniciar Turno
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

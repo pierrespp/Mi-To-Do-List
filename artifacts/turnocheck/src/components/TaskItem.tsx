@@ -1,32 +1,43 @@
-import React, { useState, useEffect } from 'react'
-import { Checkbox } from '@/components/ui/checkbox'
+import React, { useState } from 'react'
 import { Task } from '@/types'
 import { taskService } from '@/services/taskService'
 import { useTurnoStore } from '@/store/turnoStore'
-import { Pin, PinOff, Trash2, AlertCircle } from 'lucide-react'
+import { Pin, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useToast } from '@/hooks/use-toast'
 
 interface TaskItemProps {
   task: Task
+  dimmed?: boolean
 }
 
-export function TaskItem({ task }: TaskItemProps) {
+const PRIORITY_DOT: Record<Task['priority'], string> = {
+  critical: 'bg-red-500',
+  high: 'bg-orange-500',
+  normal: 'bg-transparent',
+  low: 'bg-transparent',
+}
+
+const PRIORITY_LABEL: Record<Task['priority'], string | null> = {
+  critical: 'Crítico',
+  high: 'Alto',
+  normal: null,
+  low: null,
+}
+
+export function TaskItem({ task, dimmed = false }: TaskItemProps) {
   const { updateTaskOptimistic, rollbackTask, removeTask } = useTurnoStore()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const handleToggle = async (checked: boolean) => {
-    const newStatus = checked ? 'completed' : 'pending'
+  const handleToggle = async () => {
+    const newStatus = task.status === 'completed' ? 'pending' : 'completed'
     updateTaskOptimistic(task.id, { status: newStatus })
     try {
       await taskService.updateTask(task.id, { status: newStatus })
-      if (newStatus === 'completed') {
-        toast({ title: 'Tarefa concluída' })
-      }
-    } catch (e) {
+    } catch {
       rollbackTask(task.id, task)
-      toast({ title: 'Erro ao atualizar tarefa', description: 'Tentar novamente.', variant: 'destructive' })
+      toast({ title: 'Erro ao atualizar tarefa', description: 'Tente novamente.', variant: 'destructive' })
     }
   }
 
@@ -35,7 +46,7 @@ export function TaskItem({ task }: TaskItemProps) {
     updateTaskOptimistic(task.id, { is_pinned: newPinned })
     try {
       await taskService.updateTask(task.id, { is_pinned: newPinned })
-    } catch (e) {
+    } catch {
       rollbackTask(task.id, task)
       toast({ title: 'Erro ao fixar tarefa', variant: 'destructive' })
     }
@@ -46,73 +57,82 @@ export function TaskItem({ task }: TaskItemProps) {
     try {
       await taskService.deleteTask(task.id)
       removeTask(task.id)
-      toast({ title: 'Tarefa removida' })
-    } catch (e) {
+    } catch {
       toast({ title: 'Erro ao remover tarefa', variant: 'destructive' })
       setIsDeleting(false)
     }
   }
 
   const isCompleted = task.status === 'completed'
+  const priorityLabel = PRIORITY_LABEL[task.priority]
 
   return (
-    <div 
+    <div
       className={cn(
-        "group flex items-center justify-between p-3 rounded-md transition-all duration-200 hover:bg-muted/50 border border-transparent hover:border-border",
-        isCompleted && "opacity-60",
-        isDeleting && "opacity-0 scale-95 pointer-events-none"
+        "group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 hover:bg-gray-50",
+        (isDeleting || dimmed) && "opacity-40 pointer-events-none"
       )}
       data-testid={`task-item-${task.id}`}
     >
-      <div className="flex items-center space-x-3 overflow-hidden">
-        <Checkbox 
-          checked={isCompleted} 
-          onCheckedChange={handleToggle}
-          className="transition-transform active:scale-90"
-          data-testid={`task-toggle-${task.id}`}
-        />
-        <div className="flex items-center space-x-2 overflow-hidden">
+      <button
+        onClick={handleToggle}
+        data-testid={`task-toggle-${task.id}`}
+        className={cn(
+          "flex-shrink-0 w-5 h-5 rounded-full border-2 transition-all duration-150 flex items-center justify-center",
+          isCompleted
+            ? "bg-[#16A34A] border-[#16A34A]"
+            : "border-gray-300 hover:border-gray-400"
+        )}
+      >
+        {isCompleted && (
+          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        )}
+      </button>
+
+      <div className="flex-1 min-w-0 flex items-center gap-2">
+        <span className={cn(
+          "text-sm transition-all duration-200 truncate",
+          isCompleted ? "line-through text-gray-400" : "text-gray-800 font-medium"
+        )}>
+          {task.title}
+        </span>
+
+        {task.is_pinned && !isCompleted && (
+          <Pin className="w-3 h-3 text-[#4A90E2] flex-shrink-0 fill-[#4A90E2]" />
+        )}
+
+        {priorityLabel && !isCompleted && (
           <span className={cn(
-            "text-sm font-medium truncate transition-all duration-200",
-            isCompleted ? "line-through text-muted-foreground" : "text-foreground"
+            "text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded flex-shrink-0",
+            task.priority === 'critical' && "text-red-600 bg-red-50",
+            task.priority === 'high' && "text-orange-600 bg-orange-50",
           )}>
-            {task.title}
+            {priorityLabel}
           </span>
-          {task.priority === 'critical' && !isCompleted && (
-            <span className="flex items-center text-[10px] uppercase font-bold text-destructive bg-destructive/10 px-1.5 py-0.5 rounded">
-              <AlertCircle className="w-3 h-3 mr-1" />
-              Critical
-            </span>
-          )}
-          {task.priority === 'high' && !isCompleted && (
-            <span className="text-[10px] uppercase font-bold text-[#EA580C] bg-[#EA580C]/10 px-1.5 py-0.5 rounded">
-              High
-            </span>
-          )}
-          {task.priority === 'low' && !isCompleted && (
-            <span className="text-[10px] uppercase font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-              Low
-            </span>
-          )}
-        </div>
+        )}
       </div>
 
-      <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button 
-          onClick={handlePin} 
-          className={cn("p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors", task.is_pinned && "opacity-100 text-primary")}
+      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+        <button
+          onClick={handlePin}
+          className={cn(
+            "p-1.5 rounded-lg transition-colors text-gray-300 hover:text-gray-500 hover:bg-gray-100",
+            task.is_pinned && "text-[#4A90E2]"
+          )}
           data-testid={`task-pin-${task.id}`}
           title={task.is_pinned ? "Desfixar" : "Fixar"}
         >
-          {task.is_pinned ? <Pin className="w-4 h-4 fill-current" /> : <Pin className="w-4 h-4" />}
+          <Pin className="w-3.5 h-3.5" />
         </button>
-        <button 
+        <button
           onClick={handleDelete}
-          className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+          className="p-1.5 rounded-lg transition-colors text-gray-300 hover:text-red-500 hover:bg-red-50"
           data-testid={`task-delete-${task.id}`}
           title="Remover"
         >
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>

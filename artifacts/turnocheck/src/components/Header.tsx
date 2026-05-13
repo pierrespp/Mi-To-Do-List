@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useTurnoStore } from '@/store/turnoStore'
-import { ProgressBar } from './ProgressBar'
-import { RecurringTasksModal } from './RecurringTasksModal'
-import { RestartTurnoDialog } from './RestartTurnoDialog'
 
 export function Header() {
   const { workspace, tasks } = useTurnoStore()
@@ -15,35 +12,56 @@ export function Header() {
 
   const completedCount = tasks.filter(t => t.status === 'completed').length
   const totalCount = tasks.length
+  const percentage = totalCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100)
   const isAllDone = totalCount > 0 && completedCount === totalCount
 
+  const dateStr = time.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' })
+  const formattedDate = dateStr.charAt(0).toUpperCase() + dateStr.slice(1)
+
   return (
-    <header className="bg-card border-b sticky top-0 z-10 shadow-sm" data-testid="app-header">
-      <div className="max-w-3xl mx-auto px-4 py-4 md:py-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl md:text-2xl font-bold tracking-tight">
-              🌙 TurnoCheck — {workspace?.name || 'Carregando...'}
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              {time.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })} •{' '}
-              {time.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-            </p>
+    <div className="bg-white rounded-2xl p-5 shadow-sm" data-testid="app-header">
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center text-xl flex-shrink-0">
+            🌙
           </div>
-          <div className="flex gap-2 hidden md:flex">
-            <RecurringTasksModal />
-            <RestartTurnoDialog />
+          <div>
+            <h1 className="text-lg font-bold text-gray-900 leading-tight">
+              TurnoCheck
+            </h1>
+            <p className="text-sm text-gray-400 leading-tight mt-0.5">
+              {workspace?.name || 'Carregando...'}
+            </p>
           </div>
         </div>
 
-        <ProgressBar completed={completedCount} total={totalCount} />
-
-        {isAllDone && (
-          <div className="bg-[#16A34A]/10 text-[#16A34A] border border-[#16A34A]/20 p-3 rounded-md text-sm font-medium flex items-center justify-center animate-in fade-in slide-in-from-top-2">
-            ✓ Turno concluído! Todas as tarefas feitas.
-          </div>
-        )}
+        <div className="text-right flex-shrink-0">
+          <p className="text-sm font-semibold text-gray-900">16h–00h</p>
+          <p className="text-xs text-gray-400 mt-0.5">{formattedDate}</p>
+        </div>
       </div>
-    </header>
+
+      <div className="mt-4 space-y-2">
+        <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{
+              width: `${percentage}%`,
+              backgroundColor: isAllDone ? '#16A34A' : '#4A90E2',
+            }}
+          />
+        </div>
+        <p className="text-xs text-gray-500">
+          {isAllDone ? (
+            <span className="text-[#16A34A] font-medium">✓ Turno concluído! Todas as tarefas feitas.</span>
+          ) : (
+            <>
+              <span className="font-semibold" style={{ color: '#4A90E2' }}>{percentage}%</span>
+              {' '}• {completedCount} de {totalCount} concluídas
+            </>
+          )}
+        </p>
+      </div>
+    </div>
   )
 }

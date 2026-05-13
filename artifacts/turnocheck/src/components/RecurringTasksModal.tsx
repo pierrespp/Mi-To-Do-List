@@ -10,7 +10,11 @@ import { useToast } from '@/hooks/use-toast'
 import { Switch } from '@/components/ui/switch'
 import { Task } from '@/types'
 
-export function RecurringTasksModal() {
+interface RecurringTasksModalProps {
+  trigger?: React.ReactNode
+}
+
+export function RecurringTasksModal({ trigger }: RecurringTasksModalProps = {}) {
   const { workspace, sections, recurringTasks, setRecurringTasks } = useTurnoStore()
   const { toast } = useToast()
   
@@ -69,10 +73,12 @@ export function RecurringTasksModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8" data-testid="btn-recurring-tasks">
-          <Settings className="w-4 h-4 mr-2" />
-          Recorrentes
-        </Button>
+        {trigger ?? (
+          <Button variant="outline" size="sm" className="h-8" data-testid="btn-recurring-tasks">
+            <Settings className="w-4 h-4 mr-2" />
+            Recorrentes
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="max-w-xl max-h-[80vh] flex flex-col">
         <DialogHeader>
