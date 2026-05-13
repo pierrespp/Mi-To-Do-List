@@ -22,12 +22,16 @@ export function Header() {
     <div className="bg-white rounded-2xl p-5 shadow-sm" data-testid="app-header">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center text-xl flex-shrink-0">
-            🌙
+          <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
+            <img
+              src="/logo.png"
+              alt="Mi To do List"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h1 className="text-lg font-bold text-gray-900 leading-tight">
-              TurnoCheck
+              Mi To do List
             </h1>
             <p className="text-sm text-gray-400 leading-tight mt-0.5">
               {workspace?.name || 'Carregando...'}
