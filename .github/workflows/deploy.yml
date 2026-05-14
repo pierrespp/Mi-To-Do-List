@@ -32,12 +32,11 @@ jobs:
         run: pnpm install
 
       - name: Build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          BASE_PATH: "/${{ github.event.repository.name }}/"
         run: |
-          # Define environment variables for build
-          export VITE_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-          export VITE_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
-          export BASE_PATH="/${{ github.event.repository.name }}/"
-          
           # Build from the app directory
           cd artifacts/turnocheck
           pnpm run build
