@@ -24,7 +24,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
             <img
-              src="/logo.png"
+              src={`${import.meta.env.BASE_URL}logo.png`}
               alt="Mi To do List"
               className="w-full h-full object-cover"
             />
