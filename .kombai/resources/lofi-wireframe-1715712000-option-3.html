@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 3: Card-Based Dashboard Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background-color: white;
+            border: 2px solid #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-title {
+            padding: 20px;
+            border-bottom: 3px dashed #666;
+            background: #f9f9f9;
+        }
+        
+        .option-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .option-title p {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Wireframe Styles */
+        .wireframe {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            position: relative;
+            padding: 20px;
+            border-bottom: 2px solid #ccc;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .reuse-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #4CAF50;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: bold;
+            font-family: Arial;
+            z-index: 10;
+        }
+        
+        .new-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #FF9800;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: bold;
+            font-family: Arial;
+            z-index: 10;
+        }
+        
+        .header-left h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header-subtitle {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .header-button {
+            padding: 8px 12px;
+            border: 2px solid #333;
+            background: white;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 2px;
+            font-family: 'Comic Sans MS';
+        }
+        
+        /* Content Grid */
+        .content {
+            padding: 20px;
+        }
+        
+        /* Stats Row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            position: relative;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 2px solid #666;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+        
+        .stat-value {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .stat-detail {
+            font-size: 9px;
+            color: #999;
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 20px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ccc;
+        }
+        
+        /* Task Cards Grid */
+        .task-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .task-card {
+            position: relative;
+            padding: 15px;
+            border: 2px solid #666;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .task-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+        
+        .task-card-title {
+            font-size: 13px;
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        .task-priority {
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+        
+        .priority-high {
+            background: #ffcccc;
+            border: 1px solid #ff6666;
+            color: #cc0000;
+        }
+        
+        .priority-normal {
+            background: #ffffcc;
+            border: 1px solid #ffff66;
+            color: #ff9900;
+        }
+        
+        .priority-low {
+            background: #ccffcc;
+            border: 1px solid #66ff66;
+            color: #00cc00;
+        }
+        
+        .task-card-section {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .checkbox-task {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #666;
+            border-radius: 2px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .task-due {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #ddd;
+        }
+        
+        /* Timeline View */
+        .timeline-item {
+            display: flex;
+            margin-bottom: 12px;
+            padding: 10px;
+            border-left: 3px solid #4CAF50;
+            background: #fafafa;
+        }
+        
+        .timeline-time {
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 50px;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            font-size: 12px;
+        }
+        
+        .timeline-status {
+            font-size: 10px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 15px 20px;
+            border-top: 2px solid #ccc;
+            display: flex;
+            gap: 10px;
+            background: #f9f9f9;
+        }
+        
+        .button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #333;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 2px;
+            font-family: 'Comic Sans MS';
+        }
+        
+        .button-primary {
+            background: #4CAF50;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .info-box {
+            padding: 12px 20px 20px 20px;
+            border-left: 3px solid #666;
+            background: #fafafa;
+            font-size: 11px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="option-title">
+            <h1>Option 3: Card-Based Dashboard Layout</h1>
+            <p>Experimental approach - Modern card-based dashboard with at-a-glance stats, task cards, and timeline view for maximum visual clarity</p>
+        </div>
+        
+        <div class="wireframe">
+            <!-- Header -->
+            <div class="header">
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/Header.tsx">[REUSE] Header</div>
+                <div class="header-left">
+                    <h1>Dashboard</h1>
+                    <div class="header-subtitle">Current Shift • May 14, 2026</div>
+                </div>
+                <div class="header-right">
+                    <button class="header-button">🔔 Notifications</button>
+                    <button class="header-button button-primary">⚙️ Settings</button>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="content">
+                <!-- Stats Grid (Overview) -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="new-badge" title="New component - StatCard">[NEW] StatCard</div>
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-label">Total</div>
+                        <div class="stat-value">20</div>
+                        <div class="stat-detail">All tasks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✓</div>
+                        <div class="stat-label">Completed</div>
+                        <div class="stat-value">13</div>
+                        <div class="stat-detail">65%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔴</div>
+                        <div class="stat-label">Critical</div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-detail">Urgent</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-label">Due Today</div>
+                        <div class="stat-value">7</div>
+                        <div class="stat-detail">By EOD</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="new-badge" title="New component - ProgressRing">[NEW] ProgressRing</div>
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-label">Overdue</div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-detail">Action needed</div>
+                    </div>
+                </div>
+                
+                <!-- Critical Tasks Section -->
+                <div class="section-title">🔴 Critical Priority</div>
+                <div class="task-cards">
+                    <div class="task-card">
+                        <div class="reuse-badge" title="artifacts/turnocheck/src/components/TaskItem.tsx">[REUSE] TaskItem</div>
+                        <div class="task-card-header">
+                            <div class="task-card-title">Complete end-of-shift report</div>
+                            <div class="task-priority priority-high">CRITICAL</div>
+                        </div>
+                        <div class="task-card-section">Closing Checklist</div>
+                        <div><span class="checkbox-task"></span> Task details here</div>
+                        <div class="task-due">Due: Today at 6:00 PM</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-card-header">
+                            <div class="task-card-title">Hand over to next shift</div>
+                            <div class="task-priority priority-high">CRITICAL</div>
+                        </div>
+                        <div class="task-card-section">Closing Checklist</div>
+                        <div><span class="checkbox-task"></span> Handoff documentation</div>
+                        <div class="task-due">Due: Today at 5:30 PM</div>
+                    </div>
+                </div>
+                
+                <!-- Regular Tasks Section -->
+                <div class="section-title">📋 Regular Tasks</div>
+                <div class="task-cards">
+                    <div class="task-card">
+                        <div class="task-card-header">
+                            <div class="task-card-title">Review pending requests</div>
+                            <div class="task-priority priority-normal">NORMAL</div>
+                        </div>
+                        <div class="task-card-section">Daily Work</div>
+                        <div><span class="checkbox-task"></span> Check email inbox</div>
+                        <div class="task-due">Due: Today at 3:00 PM</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-card-header">
+                            <div class="task-card-title">Update team schedule</div>
+                            <div class="task-priority priority-normal">NORMAL</div>
+                        </div>
+                        <div class="task-card-section">Coordination</div>
+                        <div><span class="checkbox-task"></span> Update spreadsheet</div>
+                        <div class="task-due">Due: Today at 2:00 PM</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-card-header">
+                            <div class="task-card-title">Team sync meeting</div>
+                            <div class="task-priority priority-low">LOW</div>
+                        </div>
+                        <div class="task-card-section">Meetings</div>
+                        <div><span class="checkbox-task" style="background: #999;"></span> 1hr meeting</div>
+                        <div class="task-due">Due: Today at 1:00 PM</div>
+                    </div>
+                </div>
+                
+                <!-- Timeline View -->
+                <div class="section-title">📅 Today's Timeline</div>
+                <div style="max-width: 600px;">
+                    <div class="timeline-item">
+                        <div class="timeline-time">09:00</div>
+                        <div class="timeline-content">
+                            Morning standup
+                            <div class="timeline-status">✓ Completed</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item" style="border-left-color: #FF9800;">
+                        <div class="timeline-time">01:00</div>
+                        <div class="timeline-content">
+                            Team sync meeting
+                            <div class="timeline-status">In progress...</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item" style="border-left-color: #f5f5f5;">
+                        <div class="timeline-time">03:00</div>
+                        <div class="timeline-content">
+                            Review pending requests
+                            <div class="timeline-status">Upcoming</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item" style="border-left-color: #f5f5f5;">
+                        <div class="timeline-time">05:30</div>
+                        <div class="timeline-content">
+                            Hand over to next shift
+                            <div class="timeline-status">Upcoming</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/RecurringTasksModal.tsx">[REUSE] RecurringTasksModal</div>
+                <button class="button">⚙️ Recurring Tasks</button>
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/RestartTurnoDialog.tsx">[REUSE] RestartTurnoDialog</div>
+                <button class="button button-primary">🔄 Start New Shift</button>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <strong>Key Features of Option 3:</strong><br>
+            • Modern card-based dashboard layout<br>
+            • Multiple stat cards for at-a-glance overview<br>
+            • Task cards with priority indicators and due dates<br>
+            • Timeline view for shift scheduling<br>
+            • New StatCard component for dashboard metrics<br>
+            • New ProgressRing component for circular progress<br>
+            • New Timeline component for shift scheduling<br>
+            • Responsive grid layout adapts to screen size<br>
+            • Great for visual learners and analytics-focused users
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 4: Full-Width Multi-Column Desktop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            background-color: white;
+            border: 2px solid #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            min-height: 95vh;
+        }
+        
+        .option-title {
+            padding: 20px;
+            border-bottom: 3px dashed #666;
+            background: #f9f9f9;
+        }
+        
+        .option-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .option-title p {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .reuse-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #4CAF50;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: bold;
+            font-family: Arial;
+            z-index: 10;
+        }
+        
+        .new-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #FF9800;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: bold;
+            font-family: Arial;
+            z-index: 10;
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Header Bar across all columns */
+        .header-bar {
+            position: relative;
+            grid-column: 1 / -1;
+            padding: 15px 20px;
+            border-bottom: 2px solid #ccc;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-right: 0;
+            border-left: 0;
+        }
+        
+        .header-bar h1 {
+            font-size: 26px;
+        }
+        
+        .header-bar-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .header-button {
+            padding: 6px 12px;
+            border: 2px solid #333;
+            background: white;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 2px;
+            font-family: 'Comic Sans MS';
+        }
+        
+        .header-button.primary {
+            background: #4CAF50;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        /* Left Sidebar - Navigation */
+        .left-sidebar {
+            position: relative;
+            width: 220px;
+            background: #e8e8e8;
+            border-right: 2px solid #ccc;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 10px;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-item {
+            padding: 8px 10px;
+            margin-bottom: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 2px;
+            font-size: 12px;
+        }
+        
+        .sidebar-item.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .sidebar-stat {
+            padding: 10px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* Center Column - Tasks List */
+        .center-column {
+            flex: 1;
+            border-right: 2px solid #ccc;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .center-header {
+            padding: 15px 20px;
+            border-bottom: 2px solid #ccc;
+            background: #f9f9f9;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .tasks-container {
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .task-row {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .task-row:hover {
+            background: #f5f5f5;
+        }
+        
+        .task-row.selected {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #666;
+            margin-right: 10px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        
+        .task-row-content {
+            flex: 1;
+        }
+        
+        .task-row-title {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .task-row-section {
+            font-size: 10px;
+            color: #666;
+        }
+        
+        .task-row-priority {
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 9px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .priority-high {
+            background: #ffcccc;
+            border: 1px solid #ff6666;
+        }
+        
+        .priority-normal {
+            background: #ffffcc;
+            border: 1px solid #ffff66;
+        }
+        
+        .priority-low {
+            background: #ccffcc;
+            border: 1px solid #66ff66;
+        }
+        
+        /* Right Sidebar - Details & Analytics */
+        .right-sidebar {
+            position: relative;
+            width: 280px;
+            background: #f9f9f9;
+            border-left: 2px solid #ccc;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .details-section {
+            margin-bottom: 20px;
+        }
+        
+        .details-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #ccc;
+        }
+        
+        .detail-item {
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+        
+        .detail-label {
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .detail-value {
+            padding: 8px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+        }
+        
+        .progress-section {
+            padding: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+        }
+        
+        .progress-label {
+            font-size: 10px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 16px;
+            background: #e0e0e0;
+            border: 1px solid #999;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 65%;
+            background: #4CAF50;
+        }
+        
+        .progress-text {
+            font-size: 9px;
+            margin-top: 4px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .timeline-block {
+            padding: 8px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            margin-bottom: 8px;
+            font-size: 10px;
+        }
+        
+        .timeline-time {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 3px;
+        }
+        
+        .timeline-task {
+            color: #666;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 15px 20px;
+            border-top: 2px solid #ccc;
+            display: flex;
+            gap: 10px;
+            background: #f9f9f9;
+        }
+        
+        .footer-button {
+            flex: 0 1 auto;
+            padding: 8px 12px;
+            border: 2px solid #333;
+            background: white;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 2px;
+            font-family: 'Comic Sans MS';
+        }
+        
+        .footer-button.primary {
+            background: #4CAF50;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .info-box {
+            padding: 12px 20px 20px 20px;
+            border-left: 3px solid #666;
+            background: #fafafa;
+            font-size: 11px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="option-title">
+            <h1>Option 4: Full-Width Multi-Column Desktop</h1>
+            <p>Pure desktop approach - Full-width layout with sidebar navigation, task list, and detail panel side-by-side for optimal productivity</p>
+        </div>
+        
+        <!-- Header Bar -->
+        <div class="header-bar">
+            <div class="reuse-badge" title="artifacts/turnocheck/src/components/Header.tsx">[REUSE] Header</div>
+            <div>
+                <h1>Task Manager</h1>
+            </div>
+            <div class="header-bar-right">
+                <button class="header-button">🔔 Notifications</button>
+                <button class="header-button">🔍 Search</button>
+                <button class="header-button primary">⚙️ Settings</button>
+            </div>
+        </div>
+        
+        <!-- Main Multi-Column Layout -->
+        <div class="main-layout">
+            <!-- Left Sidebar - Navigation & Quick Stats -->
+            <div class="left-sidebar">
+                <div class="reuse-badge" title="New component - DesktopSidebar">[NEW] DesktopSidebar</div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Sections</div>
+                    <div class="sidebar-item active">📋 All Tasks</div>
+                    <div class="sidebar-item">🔴 Critical</div>
+                    <div class="sidebar-item">📌 Important</div>
+                    <div class="sidebar-item">✓ Completed</div>
+                    <div class="sidebar-item">📅 This Week</div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Shifts</div>
+                    <div class="sidebar-item active">🌅 Morning</div>
+                    <div class="sidebar-item">☀️ Afternoon</div>
+                    <div class="sidebar-item">🌙 Evening</div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Stats</div>
+                    <div class="sidebar-stat">
+                        <div class="stat-label">Total Tasks</div>
+                        <div class="stat-value">20</div>
+                    </div>
+                    <div class="sidebar-stat">
+                        <div class="stat-label">Completed</div>
+                        <div class="stat-value">13 (65%)</div>
+                    </div>
+                    <div class="sidebar-stat">
+                        <div class="stat-label">Critical</div>
+                        <div class="stat-value">3</div>
+                    </div>
+                    <div class="sidebar-stat">
+                        <div class="stat-label">Overdue</div>
+                        <div class="stat-value">2</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center Column - Task List -->
+            <div class="center-column">
+                <div class="center-header">
+                    📋 Today's Tasks (20) — Click a task to view details
+                </div>
+                <div class="tasks-container">
+                    <div class="reuse-badge" title="artifacts/turnocheck/src/components/TaskSection.tsx">[REUSE] TaskSection</div>
+                    <div class="task-row selected">
+                        <div class="reuse-badge" title="artifacts/turnocheck/src/components/TaskItem.tsx">[REUSE] TaskItem</div>
+                        <div class="checkbox"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title">Complete end-of-shift report</div>
+                            <div class="task-row-section">Closing Checklist</div>
+                        </div>
+                        <div class="task-row-priority priority-high">CRITICAL</div>
+                    </div>
+                    
+                    <div class="task-row">
+                        <div class="checkbox"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title">Hand over to next shift</div>
+                            <div class="task-row-section">Closing Checklist</div>
+                        </div>
+                        <div class="task-row-priority priority-high">CRITICAL</div>
+                    </div>
+                    
+                    <div class="task-row">
+                        <div class="checkbox"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title">Review pending requests</div>
+                            <div class="task-row-section">Daily Work</div>
+                        </div>
+                        <div class="task-row-priority priority-normal">NORMAL</div>
+                    </div>
+                    
+                    <div class="task-row">
+                        <div class="checkbox"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title">Update team schedule</div>
+                            <div class="task-row-section">Coordination</div>
+                        </div>
+                        <div class="task-row-priority priority-normal">NORMAL</div>
+                    </div>
+                    
+                    <div class="task-row">
+                        <div class="checkbox" style="background: #999;"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title" style="text-decoration: line-through; color: #999;">Email notifications</div>
+                            <div class="task-row-section">Communications</div>
+                        </div>
+                        <div class="task-row-priority priority-low">LOW</div>
+                    </div>
+                    
+                    <div class="task-row">
+                        <div class="checkbox"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title">Team sync meeting</div>
+                            <div class="task-row-section">Meetings</div>
+                        </div>
+                        <div class="task-row-priority priority-low">LOW</div>
+                    </div>
+                    
+                    <div class="task-row">
+                        <div class="checkbox"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title">Deploy hotfix to production</div>
+                            <div class="task-row-section">Development</div>
+                        </div>
+                        <div class="task-row-priority priority-high">CRITICAL</div>
+                    </div>
+                    
+                    <div class="task-row">
+                        <div class="checkbox"></div>
+                        <div class="task-row-content">
+                            <div class="task-row-title">Code review PR #245</div>
+                            <div class="task-row-section">Development</div>
+                        </div>
+                        <div class="task-row-priority priority-normal">NORMAL</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar - Task Details & Timeline -->
+            <div class="right-sidebar">
+                <div class="reuse-badge" title="New component - TaskDetailPanel">[NEW] TaskDetailPanel</div>
+                
+                <div class="details-section">
+                    <div class="details-title">Selected Task Details</div>
+                    <div class="detail-item">
+                        <div class="detail-label">Task Name</div>
+                        <div class="detail-value">Complete end-of-shift report</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Section</div>
+                        <div class="detail-value">Closing Checklist</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Priority</div>
+                        <div class="detail-value"><span class="task-row-priority priority-high">CRITICAL</span></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Due Date</div>
+                        <div class="detail-value">Today • 6:00 PM</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">⏳ In Progress</div>
+                    </div>
+                </div>
+                
+                <div class="details-section">
+                    <div class="details-title">Shift Progress</div>
+                    <div class="progress-section">
+                        <div class="progress-label">Overall Completion</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">13 of 20 tasks (65%)</div>
+                    </div>
+                </div>
+                
+                <div class="details-section">
+                    <div class="details-title">Upcoming Schedule</div>
+                    <div class="timeline-block">
+                        <div class="timeline-time">01:00 PM</div>
+                        <div class="timeline-task">Team sync meeting</div>
+                    </div>
+                    <div class="timeline-block">
+                        <div class="timeline-time">03:00 PM</div>
+                        <div class="timeline-task">Review pending requests</div>
+                    </div>
+                    <div class="timeline-block">
+                        <div class="timeline-time">05:30 PM</div>
+                        <div class="timeline-task">Hand over to next shift</div>
+                    </div>
+                    <div class="timeline-block">
+                        <div class="timeline-time">06:00 PM</div>
+                        <div class="timeline-task">End-of-shift report</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="reuse-badge" title="artifacts/turnocheck/src/components/QuickAdd.tsx">[REUSE] QuickAdd</div>
+            <input type="text" placeholder="+ Add new task..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 2px; font-family: 'Comic Sans MS'; font-size: 11px;">
+            <select style="padding: 8px; border: 1px solid #ccc; border-radius: 2px; font-family: 'Comic Sans MS'; font-size: 11px;">
+                <option>Normal</option>
+                <option>High</option>
+                <option>Low</option>
+            </select>
+            <button class="footer-button primary">+ Add</button>
+            
+            <span style="margin-left: 20px; border-left: 1px solid #ccc; padding-left: 20px;">
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/RecurringTasksModal.tsx">[REUSE] RecurringTasksModal</div>
+                <button class="footer-button">⚙️ Recurring</button>
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/RestartTurnoDialog.tsx">[REUSE] RestartTurnoDialog</div>
+                <button class="footer-button primary">🔄 New Shift</button>
+            </span>
+        </div>
+    </div>
+    
+    <div class="info-box">
+        <strong>Key Features of Option 4:</strong><br>
+        • Full-width multi-column layout optimized for desktop<br>
+        • Left sidebar: Navigation sections, shift selection, quick stats<br>
+        • Center column: Task list with hover/selection states, inline priorities<br>
+        • Right sidebar: Task detail panel and shift timeline view<br>
+        • New DesktopSidebar component for navigation<br>
+        • New TaskDetailPanel component for task information<br>
+        • Keyboard-friendly: Select tasks from list, view details on right<br>
+        • Optimal for large monitors (1600px+)<br>
+        • No responsive considerations - desktop only<br>
+        • Great for power users managing many tasks
+    </div>
+</body>
+</html>

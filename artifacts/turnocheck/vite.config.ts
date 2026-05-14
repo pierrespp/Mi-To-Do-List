@@ -10,9 +10,10 @@ const basePath = process.env.BASE_PATH || "/Mi-To-Do-List/";
 export default defineConfig({
   base: basePath,
   define: {
-    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(process.env.SUPABASE_URL ?? ""),
-    "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(process.env.SUPABASE_ANON_KEY ?? ""),
+    ...(process.env.SUPABASE_URL ? { "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(process.env.SUPABASE_URL) } : {}),
+    ...(process.env.SUPABASE_ANON_KEY ? { "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(process.env.SUPABASE_ANON_KEY) } : {}),
   },
+
   plugins: [
     react(),
     tailwindcss(),

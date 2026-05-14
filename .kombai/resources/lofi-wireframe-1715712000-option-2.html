@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option 2: Sidebar Navigation Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            border: 2px solid #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            min-height: 90vh;
+        }
+        
+        .option-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 20px;
+            border-bottom: 3px dashed #666;
+            background: #f9f9f9;
+            margin-bottom: 20px;
+        }
+        
+        .option-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .option-title p {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .reuse-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #4CAF50;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: bold;
+            font-family: Arial;
+            z-index: 10;
+        }
+        
+        .new-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #FF9800;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: bold;
+            font-family: Arial;
+            z-index: 10;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #e8e8e8;
+            border-right: 2px solid #ccc;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-item {
+            padding: 8px 10px;
+            margin-bottom: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 2px;
+            font-size: 12px;
+        }
+        
+        .sidebar-item.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .sidebar-stat {
+            padding: 10px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* Main Content */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-top: 80px;
+        }
+        
+        .header {
+            position: relative;
+            padding: 20px;
+            border-bottom: 2px solid #ccc;
+            background: #f0f0f0;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header-subtitle {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        /* Task Cards Grid */
+        .task-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            position: relative;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 2px solid #666;
+            border-radius: 4px;
+        }
+        
+        .stat-card-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .stat-card-detail {
+            font-size: 10px;
+            color: #999;
+        }
+        
+        /* Task Section */
+        .task-section {
+            position: relative;
+            margin-bottom: 20px;
+            border: 2px solid #666;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #ddd;
+            padding: 12px;
+            border-bottom: 2px solid #666;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .section-tasks {
+            padding: 12px;
+        }
+        
+        .task-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 2px;
+        }
+        
+        .task-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #666;
+            margin-right: 10px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        
+        .task-content {
+            flex: 1;
+            font-size: 13px;
+        }
+        
+        .priority-badge {
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 9px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        
+        .priority-high {
+            background: #ffcccc;
+            border: 1px solid #ff6666;
+        }
+        
+        .priority-normal {
+            background: #ffffcc;
+            border: 1px solid #ffff66;
+        }
+        
+        .priority-low {
+            background: #ccffcc;
+            border: 1px solid #66ff66;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 15px 20px;
+            border-top: 2px solid #ccc;
+            display: flex;
+            gap: 10px;
+            background: #f9f9f9;
+        }
+        
+        .button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #333;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 2px;
+            font-family: 'Comic Sans MS';
+        }
+        
+        .button-primary {
+            background: #4CAF50;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .info-box {
+            padding: 12px;
+            margin-top: 20px;
+            border-left: 3px solid #666;
+            background: #fafafa;
+            font-size: 11px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="option-title">
+        <h1>Option 2: Sidebar Navigation Layout</h1>
+        <p>Moderate approach - Modern sidebar navigation with expanded main content area, showing stats and sections side-by-side</p>
+    </div>
+    
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="reuse-badge" title="New component - SidebarNav">[NEW] SidebarNav</div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Navigation</div>
+                <div class="sidebar-item active">📋 My Tasks</div>
+                <div class="sidebar-item">📌 Today</div>
+                <div class="sidebar-item">📅 This Week</div>
+                <div class="sidebar-item">✓ Completed</div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">Shifts</div>
+                <div class="sidebar-item">🌅 Morning</div>
+                <div class="sidebar-item">☀️ Afternoon</div>
+                <div class="sidebar-item">🌙 Evening</div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">Quick Stats</div>
+                <div class="sidebar-stat">
+                    <div class="stat-label">Today's Progress</div>
+                    <div class="stat-value">65%</div>
+                </div>
+                <div class="sidebar-stat">
+                    <div class="stat-label">Remaining</div>
+                    <div class="stat-value">7</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <button style="width: 100%; padding: 10px; background: #4CAF50; color: white; border: 2px solid #2e7d32; border-radius: 2px; font-weight: bold; cursor: pointer; font-family: 'Comic Sans MS';">⚙️ Settings</button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <!-- Header -->
+            <div class="header">
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/Header.tsx">[REUSE] Header</div>
+                <h1>My Tasks</h1>
+                <div class="header-subtitle">Current Shift • May 14, 2026</div>
+            </div>
+            
+            <!-- Content -->
+            <div class="content">
+                <!-- Top Stats Cards -->
+                <div class="task-cards-grid">
+                    <div class="stat-card">
+                        <div class="new-badge" title="New component - StatCard">[NEW] StatCard</div>
+                        <div class="stat-card-label">Total Tasks</div>
+                        <div class="stat-card-value">20</div>
+                        <div class="stat-card-detail">In current shift</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="new-badge" title="New component - StatCard">[NEW] StatCard</div>
+                        <div class="stat-card-label">Completed</div>
+                        <div class="stat-card-value">13</div>
+                        <div class="stat-card-detail">65% complete</div>
+                    </div>
+                </div>
+                
+                <!-- Task Sections -->
+                <div class="task-section">
+                    <div class="reuse-badge" title="artifacts/turnocheck/src/components/TaskSection.tsx">[REUSE] TaskSection</div>
+                    <div class="section-header">🔴 Critical Tasks</div>
+                    <div class="section-tasks">
+                        <div class="task-item">
+                            <div class="reuse-badge" title="artifacts/turnocheck/src/components/TaskItem.tsx">[REUSE] TaskItem</div>
+                            <div class="checkbox"></div>
+                            <div class="task-content">Complete end-of-shift report</div>
+                            <div class="priority-badge priority-high">CRITICAL</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="checkbox"></div>
+                            <div class="task-content">Hand over to next shift</div>
+                            <div class="priority-badge priority-high">CRITICAL</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="task-section">
+                    <div class="section-header">📋 Regular Tasks</div>
+                    <div class="section-tasks">
+                        <div class="task-item">
+                            <div class="checkbox"></div>
+                            <div class="task-content">Review pending requests</div>
+                            <div class="priority-badge priority-normal">NORMAL</div>
+                        </div>
+                        <div class="task-item">
+                            <div class="checkbox" style="background: #999;"></div>
+                            <div class="task-content" style="text-decoration: line-through;">Email notifications</div>
+                            <div class="priority-badge priority-low">LOW</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/RecurringTasksModal.tsx">[REUSE] RecurringTasksModal</div>
+                <button class="button">⚙️ Recurring Tasks</button>
+                <div class="reuse-badge" title="artifacts/turnocheck/src/components/RestartTurnoDialog.tsx">[REUSE] RestartTurnoDialog</div>
+                <button class="button button-primary">🔄 Start New Shift</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-box">
+        <strong>Key Features of Option 2:</strong><br>
+        • Sidebar navigation for easy switching between views<br>
+        • Quick stats panel in sidebar for at-a-glance info<br>
+        • New StatCard component for top-level metrics<br>
+        • More horizontal space for task sections<br>
+        • Better for power users who need quick navigation<br>
+        • Responsive sidebar (collapses on smaller screens)
+    </div>
+</body>
+</html>
