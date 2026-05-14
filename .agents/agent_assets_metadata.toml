@@ -1,8 +1,0 @@
-uploads = []
-outputs = []
-
-[[generated]]
-id = "BbsJe4ZRtQ1Elo0ee2lQM"
-uri = "file://artifacts/turnocheck/public/logo.png"
-type = "image"
-title = "mi-todo-list-logo"

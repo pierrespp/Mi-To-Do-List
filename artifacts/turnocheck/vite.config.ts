@@ -4,16 +4,21 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
-const port = Number(process.env.PORT) || 5173;
-const basePath = process.env.BASE_PATH || "/Mi-To-Do-List/";
+const rawPort = process.env.PORT || "5173";
+const port = Number(rawPort);
+
+if (Number.isNaN(port) || port <= 0) {
+  throw new Error(`Invalid PORT value: "${rawPort}"`);
+}
+
+const basePath = process.env.BASE_PATH || "/";
 
 export default defineConfig({
   base: basePath,
   define: {
-    ...(process.env.SUPABASE_URL ? { "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(process.env.SUPABASE_URL) } : {}),
-    ...(process.env.SUPABASE_ANON_KEY ? { "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(process.env.SUPABASE_ANON_KEY) } : {}),
+    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(process.env.SUPABASE_URL ?? ""),
+    "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(process.env.SUPABASE_ANON_KEY ?? ""),
   },
-
   plugins: [
     react(),
     tailwindcss(),
@@ -41,7 +46,7 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname),
   build: {
-    outDir: "dist/public",
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
   server: {

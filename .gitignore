@@ -48,7 +48,12 @@ Thumbs.db
 .cache/
 .local/
 
-# AI Assistant & Design Tools
+# Assistant & Local Assets
 .agent/
-.kombai/
+attached_assets/
+artifacts/mockup-sandbox/
 
+# Environment Variables
+.env
+.env.*
+!.env.example
