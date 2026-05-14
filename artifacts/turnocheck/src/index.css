@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -16,145 +16,71 @@
   --color-card-foreground: hsl(var(--card-foreground));
   --color-card-border: hsl(var(--card-border));
 
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-popover-border: hsl(var(--popover-border));
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-primary-border: var(--primary-border);
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-secondary-border: var(--secondary-border);
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-muted-border: var(--muted-border);
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-accent-border: var(--accent-border);
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-destructive-border: var(--destructive-border);
-
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
-
   --color-sidebar: hsl(var(--sidebar));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-primary: hsl(var(--sidebar-primary));
   --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
-  --color-sidebar-primary-border: var(--sidebar-primary-border);
   --color-sidebar-accent: hsl(var(--sidebar-accent));
   --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
-  --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --color-critical: var(--color-critical);
-  --color-high: var(--color-high);
-  --color-normal: var(--color-normal);
-  --color-low: var(--color-low);
-  --color-progress: var(--color-progress);
-  --color-completed: var(--color-completed);
-
-  --font-sans: var(--app-font-sans);
-  --font-serif: var(--app-font-serif);
-  --font-mono: var(--app-font-mono);
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--app-font-sans);
+  
+  --animate-sparkle: sparkle 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.5s ease-in-out infinite;
+  --animate-blob-1: blobFloat1 8s infinite ease-in-out;
+  --animate-blob-2: blobFloat2 9s infinite ease-in-out;
+  --animate-blob-3: blobFloat3 7s infinite ease-in-out;
 }
 
 :root {
-  --background: 60 10% 97%;
-  --foreground: 0 0% 10%;
+  --background: 300 80% 97%;
+  --foreground: 320 60% 22%;
+  --border: 320 50% 88%;
+  --input: 320 50% 90%;
+  --ring: 320 90% 65%;
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 10%;
-  --card-border: 0 0% 90%;
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
-  --primary: 210 79% 60%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 10%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 42%;
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 10%;
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 100%;
-  --ring: 210 79% 60%;
-  --sidebar: 60 10% 97%;
-  --sidebar-foreground: 0 0% 10%;
-  --sidebar-border: 0 0% 90%;
-  --sidebar-primary: 210 79% 60%;
+  --card-foreground: 320 60% 22%;
+  --card-border: 320 60% 92%;
+  --sidebar: 280 70% 97%;
+  --sidebar-foreground: 320 60% 22%;
+  --sidebar-border: 320 50% 88%;
+  --sidebar-primary: 320 90% 65%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 0 0% 96%;
-  --sidebar-accent-foreground: 0 0% 10%;
-  --sidebar-ring: 210 79% 60%;
+  --sidebar-accent: 320 80% 93%;
+  --sidebar-accent-foreground: 320 90% 38%;
+  --sidebar-ring: 320 90% 65%;
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 10%;
-  --popover-border: 0 0% 90%;
-  
-  --chart-1: 12 76% 61%;
-  --chart-2: 173 58% 39%;
-  --chart-3: 197 37% 24%;
-  --chart-4: 43 74% 66%;
-  --chart-5: 27 87% 67%;
-
-  --radius: 0.375rem;
-
-  --color-critical: #DC2626;
-  --color-high: #EA580C;
-  --color-normal: #2D3748;
-  --color-low: #94A3B8;
-  --color-progress: #4A90E2;
-  --color-completed: #16A34A;
-
-  --app-font-sans: 'Inter', sans-serif;
-  --app-font-serif: Georgia, serif;
-  --app-font-mono: Menlo, monospace;
-}
-
-.dark {
-  --background: 0 0% 10%;
-  --foreground: 60 10% 97%;
-  --card: 0 0% 15%;
-  --card-foreground: 60 10% 97%;
-  --card-border: 0 0% 25%;
-  --border: 0 0% 25%;
-  --input: 0 0% 25%;
-  --primary: 210 79% 60%;
+  --popover-foreground: 320 60% 22%;
+  --popover-border: 320 60% 92%;
+  --primary: 320 90% 62%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 60 10% 97%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 65%;
-  --accent: 0 0% 15%;
-  --accent-foreground: 60 10% 97%;
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 100%;
-  --ring: 210 79% 60%;
-  --sidebar: 0 0% 10%;
-  --sidebar-foreground: 60 10% 97%;
-  --sidebar-border: 0 0% 25%;
-  --sidebar-primary: 210 79% 60%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 0 0% 15%;
-  --sidebar-accent-foreground: 60 10% 97%;
-  --sidebar-ring: 210 79% 60%;
-  --popover: 0 0% 15%;
-  --popover-foreground: 60 10% 97%;
-  --popover-border: 0 0% 25%;
+  --secondary: 190 90% 72%;
+  --secondary-foreground: 190 90% 18%;
+  --muted: 280 50% 94%;
+  --muted-foreground: 280 30% 48%;
+  --accent: 320 80% 93%;
+  --accent-foreground: 320 90% 38%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  --radius: 1.5rem;
+  --app-font-sans: 'Nunito', sans-serif;
 }
 
 @layer base {
@@ -162,6 +88,59 @@
     @apply border-border;
   }
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 20%, #e1bee7 50%, #d1c4e9 70%, #bbdefb 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 14s ease infinite;
+    @apply font-sans antialiased text-foreground min-h-screen;
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-duration: 500ms;
   }
+  
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes sparkle {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes blobFloat1 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.97); }
+}
+
+@keyframes blobFloat2 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(-35px, 30px) scale(1.03); }
+  66% { transform: translate(25px, -25px) scale(0.98); }
+}
+
+@keyframes blobFloat3 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(20px, 35px) scale(1.04); }
 }
