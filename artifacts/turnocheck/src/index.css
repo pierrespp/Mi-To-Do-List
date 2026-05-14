@@ -160,8 +160,11 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply transition-colors duration-300;
+  }
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground transition-colors duration-300;
   }
 }
 
@@ -202,7 +205,7 @@
 /* ─────────────────────────────────────────────────────────
    KAWAII PRIDE THEME
    Ativa quando <html data-theme="kawaii">
-   Inspirado no protótipo KawaiiPride.tsx
+   Inspirado em estética kawaii + pride colors
 ────────────────────────────────────────────────────────── */
 :root[data-theme="kawaii"] {
   /* Base */
@@ -260,10 +263,19 @@
   --app-font-sans: 'Outfit', sans-serif;
 }
 
+/* Kawaii pride specific styles */
+:root[data-theme="kawaii"] {
+  color-scheme: light;
+}
+
+:root[data-theme="kawaii"] body {
+  background: linear-gradient(135deg, hsl(350 60% 97%) 0%, hsl(290 40% 96%) 100%);
+}
+
 /* ─────────────────────────────────────────────────────────
    SPATIAL MOODBOARD THEME
    Ativa quando <html data-theme="spatial">
-   Inspirado no protótipo Moodboard.tsx
+   Estética minimalista + papel envelhecido
 ────────────────────────────────────────────────────────── */
 :root[data-theme="spatial"] {
   /* Base — papel/bege */
@@ -319,5 +331,14 @@
   /* Shape & typography */
   --radius: 0.25rem;
   --app-font-sans: 'Lora', serif;
+}
+
+/* Spatial specific styles */
+:root[data-theme="spatial"] {
+  color-scheme: light;
+}
+
+:root[data-theme="spatial"] body {
+  background: linear-gradient(135deg, hsl(42 35% 93%) 0%, hsl(42 25% 90%) 100%);
 }
 
