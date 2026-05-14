@@ -35,7 +35,8 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Build
-        run: pnpm --filter @workspace/turnocheck run build
+        working-directory: artifacts/turnocheck
+        run: pnpm run build
         env:
           BASE_PATH: /Mi-To-Do-List/
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -50,7 +51,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./artifacts/turnocheck/dist/public
+          path: artifacts/turnocheck/dist/public
 
       - name: Deploy to GitHub Pages
         id: deployment
