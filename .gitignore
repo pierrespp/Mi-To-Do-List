@@ -51,7 +51,7 @@ Thumbs.db
 # Assistant & Local Assets
 .agent/
 attached_assets/
-artifacts/mockup-sandbox/
+
 
 # Environment Variables
 .env
