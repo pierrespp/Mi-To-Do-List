@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 import { Task } from '@/types'
 import { taskService } from '@/services/taskService'
 import { useTurnoStore } from '@/store/turnoStore'
@@ -25,7 +25,7 @@ const PRIORITY_LABEL: Record<Task['priority'], string | null> = {
   low: null,
 }
 
-export function TaskItem({ task, dimmed = false }: TaskItemProps) {
+export const TaskItem = memo(function TaskItem({ task, dimmed = false }: TaskItemProps) {
   const { updateTaskOptimistic, rollbackTask, removeTask } = useTurnoStore()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
@@ -78,11 +78,12 @@ export function TaskItem({ task, dimmed = false }: TaskItemProps) {
         onClick={handleToggle}
         data-testid={`task-toggle-${task.id}`}
         className={cn(
-          "flex-shrink-0 w-5 h-5 rounded-full border-2 transition-all duration-150 flex items-center justify-center",
+          "checkbox-task",
           isCompleted
-            ? "bg-[#16A34A] border-[#16A34A]"
+            ? "bg-[var(--color-completed)] border-[var(--color-completed)]"
             : "border-gray-300 hover:border-gray-400"
         )}
+        aria-label={isCompleted ? `Marcar "${task.title}" como pendente` : `Completar "${task.title}"`}
       >
         {isCompleted && (
           <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -100,7 +101,7 @@ export function TaskItem({ task, dimmed = false }: TaskItemProps) {
         </span>
 
         {task.is_pinned && !isCompleted && (
-          <Pin className="w-3 h-3 text-[#4A90E2] flex-shrink-0 fill-[#4A90E2]" />
+          <Pin className="w-3 h-3 flex-shrink-0 fill-[var(--color-progress)]" style={{ color: 'var(--color-progress)' }} />
         )}
 
         {priorityLabel && !isCompleted && (
@@ -118,23 +119,24 @@ export function TaskItem({ task, dimmed = false }: TaskItemProps) {
         <button
           onClick={handlePin}
           className={cn(
-            "p-1.5 rounded-lg transition-colors text-gray-300 hover:text-gray-500 hover:bg-gray-100",
-            task.is_pinned && "text-[#4A90E2]"
+            "btn-icon-small text-gray-400 hover:text-gray-600 hover:bg-gray-100",
+            task.is_pinned && "hover:bg-blue-50"
           )}
+          style={task.is_pinned ? { color: 'var(--color-progress)' } : undefined}
           data-testid={`task-pin-${task.id}`}
-          title={task.is_pinned ? "Desfixar" : "Fixar"}
+          aria-label={task.is_pinned ? "Desfixar tarefa" : "Fixar tarefa"}
         >
           <Pin className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={handleDelete}
-          className="p-1.5 rounded-lg transition-colors text-gray-300 hover:text-red-500 hover:bg-red-50"
+          className="btn-icon-small text-gray-400 hover:text-red-600 hover:bg-red-50"
           data-testid={`task-delete-${task.id}`}
-          title="Remover"
+          aria-label={`Remover "${task.title}"`}
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
   )
-}
+})

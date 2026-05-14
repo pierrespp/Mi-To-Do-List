@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import { useTurnoStore } from '@/store/turnoStore'
 
-export function Header() {
+export const Header = memo(function Header() {
   const { workspace, tasks } = useTurnoStore()
   const [time, setTime] = useState(new Date())
 
@@ -40,27 +40,27 @@ export function Header() {
         </div>
 
         <div className="text-right flex-shrink-0">
-          <p className="text-sm font-semibold text-gray-900">16h–00h</p>
-          <p className="text-xs text-gray-400 mt-0.5">{formattedDate}</p>
+          <p className="text-sm font-semibold text-gray-900">Turno Ativo</p>
+          <p className="text-xs text-gray-600 mt-0.5">{formattedDate}</p>
         </div>
       </div>
 
       <div className="mt-4 space-y-2">
         <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div
-            className="h-full rounded-full transition-all duration-500"
+            className="h-full rounded-full transition-colors duration-500"
             style={{
               width: `${percentage}%`,
-              backgroundColor: isAllDone ? '#16A34A' : '#4A90E2',
+              backgroundColor: isAllDone ? 'var(--color-completed)' : 'var(--color-progress)',
             }}
           />
         </div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-700">
           {isAllDone ? (
-            <span className="text-[#16A34A] font-medium">✓ Turno concluído! Todas as tarefas feitas.</span>
+            <span className="font-medium" style={{ color: 'var(--color-completed)' }}>✓ Turno concluído! Todas as tarefas feitas.</span>
           ) : (
             <>
-              <span className="font-semibold" style={{ color: '#4A90E2' }}>{percentage}%</span>
+              <span className="font-semibold" style={{ color: 'var(--color-progress)' }}>{percentage}%</span>
               {' '}• {completedCount} de {totalCount} concluídas
             </>
           )}
@@ -68,4 +68,4 @@ export function Header() {
       </div>
     </div>
   )
-}
+})

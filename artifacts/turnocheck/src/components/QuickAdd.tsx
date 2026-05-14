@@ -95,8 +95,9 @@ export function QuickAdd({ sections }: GlobalQuickAddProps) {
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="text-xs text-gray-400 hover:text-gray-600 transition-colors truncate max-w-[80px] flex-shrink-0"
+                className="btn-text-sm text-gray-600 hover:text-gray-800 truncate max-w-[80px] flex-shrink-0"
                 data-testid="quickadd-section-selector"
+                aria-label={`Selecionar seção, atualmente: ${selectedSection?.name || 'Seção'}`}
               >
                 {selectedSection?.name.split(' ')[0] || 'Seção'}
               </button>
@@ -115,8 +116,9 @@ export function QuickAdd({ sections }: GlobalQuickAddProps) {
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className={cn("flex-shrink-0 transition-colors", currentPriority.color)}
+              className={cn("btn-icon-small flex-shrink-0", currentPriority.color)}
               data-testid="quickadd-priority"
+              aria-label={`Prioridade atual: ${currentPriority.label}`}
             >
               <Flag className="w-4 h-4" />
             </button>
@@ -136,11 +138,11 @@ export function QuickAdd({ sections }: GlobalQuickAddProps) {
       </form>
 
       <div className="px-4 pb-3 flex items-center gap-1.5">
-        <span className="text-[11px] text-gray-400">Dica: Pressione</span>
-        <kbd className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded font-mono">/</kbd>
-        <span className="text-[11px] text-gray-400">para focar e</span>
-        <kbd className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded font-mono">Enter</kbd>
-        <span className="text-[11px] text-gray-400">para adicionar</span>
+        <span className="text-[11px] text-gray-600">Dica: Pressione</span>
+        <kbd className="text-[10px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded font-mono">/</kbd>
+        <span className="text-[11px] text-gray-600">para focar e</span>
+        <kbd className="text-[10px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded font-mono">Enter</kbd>
+        <span className="text-[11px] text-gray-600">para adicionar</span>
       </div>
     </div>
   )

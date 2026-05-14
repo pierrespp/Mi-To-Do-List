@@ -85,8 +85,8 @@ export default function WorkspacePage() {
   let sectionIndex = 0
 
   return (
-    <div className="min-h-screen bg-[#EDEDE9]" data-testid="workspace-page">
-      <main className="max-w-xl mx-auto px-4 pt-5 pb-28 space-y-3">
+    <div className="min-h-screen bg-[#EDEDE9] flex flex-col" data-testid="workspace-page">
+      <main className="max-w-xl mx-auto px-4 pt-5 pb-24 space-y-3 flex-1 w-full">
         <Header />
 
         {closingSections.map(section => (
@@ -112,13 +112,14 @@ export default function WorkspacePage() {
         <CompletedSection tasks={completedTasks} />
       </main>
 
-      <footer className="fixed bottom-0 left-0 right-0 bg-[#EDEDE9] border-t border-gray-200">
-        <div className="max-w-xl mx-auto px-5 py-3 flex items-center justify-between">
+      <footer className="fixed bottom-0 left-0 right-0 bg-[#EDEDE9] border-t border-gray-200 z-40">
+        <div className="max-w-2xl mx-auto px-5 py-3 flex items-center justify-center sm:justify-between w-full">
           <RecurringTasksModal
             trigger={
               <button
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                className="btn-text-sm text-gray-700 hover:text-gray-900"
                 data-testid="btn-recurring"
+                aria-label="Gerenciar tarefas recorrentes"
               >
                 <Settings className="w-4 h-4" />
                 Gerenciar Recorrentes
@@ -128,8 +129,9 @@ export default function WorkspacePage() {
           <RestartTurnoDialog
             trigger={
               <button
-                className="flex items-center gap-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white hover:bg-gray-50 px-4 py-2 rounded-xl transition-colors shadow-sm"
+                className="btn-footer flex items-center gap-2"
                 data-testid="btn-restart"
+                aria-label="Reiniciar turno"
               >
                 <RotateCcw className="w-4 h-4" />
                 Reiniciar Turno

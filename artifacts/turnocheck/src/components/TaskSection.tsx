@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Section, Task } from '@/types'
 import { TaskItem } from './TaskItem'
 import { Lock } from 'lucide-react'
@@ -11,7 +11,7 @@ interface TaskSectionProps {
   index: number
 }
 
-export function TaskSection({ section, tasks, index }: TaskSectionProps) {
+export const TaskSection = memo(function TaskSection({ section, tasks, index }: TaskSectionProps) {
   const pendingTasks = tasks.filter(t => t.status === 'pending')
 
   const sortedTasks = [...pendingTasks].sort((a, b) => {
@@ -46,14 +46,14 @@ export function TaskSection({ section, tasks, index }: TaskSectionProps) {
             {section.name}
           </h2>
         </div>
-        <span className="text-xs text-gray-300 font-medium">
+        <span className="text-xs text-gray-500 font-medium">
           {sortedTasks.length} pendente{sortedTasks.length !== 1 ? 's' : ''}
         </span>
       </div>
 
       <div className="px-2 pb-2">
         {sortedTasks.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-5">
+          <p className="text-sm text-gray-600 text-center py-5">
             Nenhuma tarefa pendente no momento.
           </p>
         ) : (
@@ -66,4 +66,4 @@ export function TaskSection({ section, tasks, index }: TaskSectionProps) {
       </div>
     </motion.div>
   )
-}
+})
