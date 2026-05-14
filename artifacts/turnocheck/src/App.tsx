@@ -21,7 +21,17 @@ function Router() {
 
 function App() {
   // Garantir que a base seja exatamente o que o GitHub espera (/Mi-To-Do-List)
+  // No GitHub Pages, BASE_URL costuma ser /RepoName/
   const base = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
+
+  // Logs diagnósticos para produção
+  if (import.meta.env.PROD) {
+    console.log("[App] Modo Produção");
+    console.log("[App] BASE_URL:", import.meta.env.BASE_URL);
+    console.log("[App] Router Base:", base);
+    console.log("[App] Pathname:", window.location.pathname);
+  }
+
 
   return (
     <QueryClientProvider client={queryClient}>

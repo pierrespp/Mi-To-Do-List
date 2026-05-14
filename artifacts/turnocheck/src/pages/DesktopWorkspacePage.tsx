@@ -38,17 +38,23 @@ export default function DesktopWorkspacePage() {
       setIsLoading(true)
       setError(null)
       try {
+        console.log("[Workspace] Carregando slug:", slug);
         const ws = await workspaceService.getOrCreateWorkspace(slug)
+        console.log("[Workspace] Workspace carregado:", ws.id);
         setWorkspace(ws)
 
+        console.log("[Workspace] Buscando turno ativo...");
         const turno = await workspaceService.getActiveTurno(ws.id)
+        console.log("[Workspace] Turno carregado:", turno?.id || "Nenhum turno ativo");
         setTurno(turno)
 
+        console.log("[Workspace] Buscando seções, tarefas e recorrentes...");
         const [secs, tsks, recTasks] = await Promise.all([
           workspaceService.getSections(ws.id),
           turno ? workspaceService.getTasks(turno.id) : Promise.resolve([]),
           workspaceService.getRecurringTasks(ws.id),
         ])
+        console.log("[Workspace] Dados carregados:", { sections: secs.length, tasks: tsks.length });
 
         setSections(secs)
         setTasks(tsks)
