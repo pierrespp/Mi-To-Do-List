@@ -2,6 +2,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/context/ThemeContext";
 import NotFound from "@/pages/not-found";
 import DesktopWorkspacePage from "@/pages/DesktopWorkspacePage";
 import { Redirect } from "wouter";
@@ -19,16 +20,22 @@ function Router() {
 }
 
 function App() {
+  // Garantir que a base seja exatamente o que o GitHub espera (/Mi-To-Do-List)
+  const base = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
+
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <WouterRouter base={base}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
+
 
 export default App;
