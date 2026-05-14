@@ -70,6 +70,23 @@ export default function DesktopWorkspacePage() {
     if (slug) loadWorkspace()
   }, [slug])
 
+  // Create a map of sections for quick lookup
+  const sectionsMap = sections.reduce((acc, s) => {
+    acc[s.id] = s
+    return acc
+  }, {} as Record<string, typeof sections[0]>)
+
+  // Get the selected task
+  const selectedTask = selectedTaskId ? tasks.find(t => t.id === selectedTaskId) : null
+  const selectedSection = selectedTask && selectedTask.section_id ? sectionsMap[selectedTask.section_id] : null
+
+  // Handle task selection and clear if deleted
+  useEffect(() => {
+    if (selectedTaskId && !tasks.find(t => t.id === selectedTaskId)) {
+      setSelectedTaskId(null)
+    }
+  }, [tasks, selectedTaskId, setSelectedTaskId])
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -89,23 +106,6 @@ export default function DesktopWorkspacePage() {
       </div>
     )
   }
-
-  // Create a map of sections for quick lookup
-  const sectionsMap = sections.reduce((acc, s) => {
-    acc[s.id] = s
-    return acc
-  }, {} as Record<string, typeof sections[0]>)
-
-  // Get the selected task
-  const selectedTask = selectedTaskId ? tasks.find(t => t.id === selectedTaskId) : null
-  const selectedSection = selectedTask && selectedTask.section_id ? sectionsMap[selectedTask.section_id] : null
-
-  // Handle task selection and clear if deleted
-  useEffect(() => {
-    if (selectedTaskId && !tasks.find(t => t.id === selectedTaskId)) {
-      setSelectedTaskId(null)
-    }
-  }, [tasks, selectedTaskId, setSelectedTaskId])
 
   const handleTaskUpdated = () => {
     setRefreshKey(prev => prev + 1)
